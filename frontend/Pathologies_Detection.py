@@ -23,6 +23,8 @@ import os
 
 import requests 
 
+from pathlib import Path 
+
 input_valori = {} 
 
 feature_slider = [] 
@@ -192,15 +194,17 @@ if "input_valori" not in st.session_state:
 if "lingua" not in st.session_state:
     st.session_state["lingua"] = "inglese"
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # caricamento di CSV e modello dell'utente 
-dataset_path = st.session_state.get("dataset_path", "/dataset/dataset_unito.csv")
-modello_path = st.session_state.get("modello_path", "Anemia_combined.pkl")
+dataset_path = st.session_state.get("dataset_path", BASE_DIR / "dataset" / "dataset_unito.csv")
+modello_path = st.session_state.get("modello_path", BASE_DIR / "model" / "Anemia_combined.pkl")
 
 # se il custom non esiste usa il default 
 if not os.path.exists(dataset_path): 
-    dataset_path = "/dataset/dataset_unito.csv"
+    dataset_path = BASE_DIR / "dataset" / "dataset_unito.csv"
 if not os.path.exists(modello_path): 
-    modello_path = "/model/Anemia_combined.pkl"
+    modello_path = BASE_DIR / "model" / "Anemia_combined.pkl"
 
 df = pd.read_csv(dataset_path)
 model = joblib.load(modello_path)
